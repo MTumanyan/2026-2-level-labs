@@ -3,18 +3,15 @@ Lab 1.
 
 Language detection
 """
-
-# pylint:disable=unused-argument
-from typing import Sequence
+from typing import Dict, List, Optional, Tuple
 
 FreqDictType = dict[str, float]
 "Frequency dictionary. Contains pairs of token and its frequency."
 ProfileType = tuple[str, FreqDictType, int]
 "Language profile of a text. Contains language name, frequency dictionary and number of tokens."
-# Mark 4.kji
 
 
-def tokenize(text: str) -> jjjSequence[str] | None:
+def tokenize(text: str) -> Sequence[str] | None:
     """
     Splits a text into tokens, converts the tokens into lowercase,
     removes punctuation and other symbols from words
@@ -26,6 +23,18 @@ def tokenize(text: str) -> jjjSequence[str] | None:
         Sequence[str] | None: Sequence of lower-cased tokens without punctuation.
         Returns None if input text is not a string.
     """
+
+    if type(text) is not str:
+        return None
+    tokens = [] # Ложка и вилка.
+    for symbol in text:
+        if symbol.isalpha():
+            tokens.append(symbol.lower())
+        elif symbol.isspace():
+            tokens.append(" ") # [л, о, ж, к, а, , и, , в]
+    tokens = "".join(tokens)
+    tokens = tokens.split()
+    return tokens
 
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
@@ -39,6 +48,22 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
         Sequence[str] | None: Sequence of tokens without stop words.
         Returns None in case of incorrect input types.
     """
+
+    if type(tokens) is not list and type(tokens) is not tuple:
+        return None
+    if type(stop_words) is not list and type(stop_words) is not tuple:
+        return None
+    for token in tokens:
+        if type(token) is not str:
+            return None
+    for stop_word in stop_words:
+        if type(stop_word) is not str:
+            return None
+    cleaned_tokens = []
+    for token in tokens:
+        if token not in stop_words:
+            cleaned_tokens.append(token)
+    return cleaned_tokens
 
 
 def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
@@ -264,3 +289,12 @@ def print_report(
 
     In case of incorrect type inputs, does not print anything.
     """
+
+tokens = tokenize("I was studying.")
+print(tokens)
+stop_words = ["am", "was"]
+print(remove_stop_words(tokens, stop_words))
+
+# ["I", " ", "was", " ",  "studying", "."]
+
+# "I was studying"
