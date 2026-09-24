@@ -25,7 +25,7 @@ def tokenize(text: str) -> Sequence[str] | None:
         Returns None if input text is not a string.
     """
 
-    if type(text) is not str:
+    if not isinstance(text, str):
         return None
     if not text:
         return None
@@ -52,9 +52,9 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
         Returns None in case of incorrect input types.
     """
 
-    if type(tokens) is not list and type(tokens) is not tuple:
+    if not isinstance(tokens, (list, tuple)):
         return None
-    if type(stop_words) is not list and type(stop_words) is not tuple:
+    if not isinstance(stop_words, (list, tuple)):
         return None
     if not tokens or not stop_words:
         return None
@@ -82,10 +82,10 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
         Returns None in case of incorrect input types.
     """
 
-    if type(tokens) is not list and type(tokens) is not tuple:
+    if not isinstance(tokens, (list, tuple)):
         return None
     for token in tokens:
-        if type(token) is not str:
+        if not isinstance(token, str):
             return None
     if not tokens: # проверка на пустой список
         return None
@@ -114,12 +114,12 @@ def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | 
         Returns None in case of incorrect input types or non-positive top_n.
     """
 
-    if type(freq_dict) is not dict or type(top_n) is not int:
+    if not isinstance(freq_dict, dict) or not isinstance(top_n, int):
         return None
     for key in freq_dict.keys():
-        if type(key) is not str:
+        if not isinstance(key, str):
             return None
-        if type(freq_dict[key]) is not float:
+        if not isinstance(freq_dict[key], float):
             return None
     if top_n <= 0:
         return None
@@ -149,13 +149,21 @@ def create_language_profile(
     """
     if not isinstance(language, str) or not isinstance(text, str):
         return None
+    if not isinstance(stop_words, (list, tuple)):
+        return None
+    for stop_word in stop_words:
+        if not isinstance(stop_word, str):
+            return None
     tokens = tokenize(text)
     if tokens is None:
         return None
     cleaned_tokens = remove_stop_words(tokens, stop_words)
     if cleaned_tokens is None:
         return None
-    return (language, freq_dict, len(freq_dict))
+    freq_dict = calculate_frequencies(cleaned_tokens)
+    if freq_dict is None:
+        return None
+    return (language, freq_dict, len(freq_dict)) # возвращает именно это по изначальным требованиям!!!
 
 
 def check_profile(profile: ProfileType) -> bool:
@@ -172,12 +180,12 @@ def check_profile(profile: ProfileType) -> bool:
 
     if not isinstance(profile, tuple) or len(profile) != 3:
         return False
-    lang, freq, n_words = profile
+    lang, freq, n_words = profile # для отдельной проверки каждого элемента
     if not isinstance (lang, str):
-        return None
-    if not isinstance(fre, dict) or not all(isinstance(k, str) and isinstance(v, (float, int)) for k, v in freq.items()):
-        return None
-    if not isinstance(n_words, int) or isinstance(n_words, bool):
+        return False
+    if not isinstance(freq, dict) or not all(isinstance(k, str) and isinstance(v, (float, int)) for k, v in freq.items()):
+        return False
+    if not isinstance(n_words, int) or isinstance(n_words, bool) or n_words <= 0: # взаимосвязь bool-типа со значениями 0, 1
         return False
     return True
 
@@ -205,7 +213,10 @@ def compare_profiles_by_top_n(
     top_language = get_top_n_words(profile_to_compare[1], top_n)
     if top_unknown is None or top_language is None:
         return None
-    intersection_size =len(set(top_unknown) & set(top_language))
+    intersection_size = 0
+    for word in top_unknown:
+        if word in top_language:
+            intersection_size += 1
     return intersection_size / len(top_unknown)
 
 
@@ -236,7 +247,7 @@ def detect_language_by_top_n(
         return profile_2[0]
     else:
         return sorted([profile_1[0], profile_2[0]])[0]
-
+    
 
 # Mark 8
 
