@@ -59,10 +59,10 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
     if not tokens or not stop_words:
         return None
     for token in tokens:
-        if type(token) is not str:
+        if not isinstance(token, str):
             return None
     for stop_word in stop_words:
-        if type(stop_word) is not str:
+        if not isinstance(stop_word, str):
             return None
     cleaned_tokens = []
     for token in tokens:
