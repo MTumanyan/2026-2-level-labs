@@ -96,7 +96,7 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
             freq_dict[token] +=1 # freq_dict[token] = freq_dict[token] + 1
         else:
             freq_dict[token] = 1 # создаём новую пару (в квадратных скобках прописываем ключ)
-    for key in freq_dict.keys():
+    for key in freq_dict:
         freq_dict[key] /= total_tokens
     return freq_dict
 
@@ -116,7 +116,7 @@ def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | 
 
     if not isinstance(freq_dict, dict) or not isinstance(top_n, int):
         return None
-    for key in freq_dict.keys():
+    for key in freq_dict:
         if not isinstance(key, str):
             return None
         if not isinstance(freq_dict[key], float):
@@ -124,8 +124,9 @@ def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | 
     if top_n <= 0:
         return None
     def sorting_rule(key):
-        return (-freq_dict[key], key) # вернётся кортеж из 2-х значений, по умолчанию сортируем по алфавиту)
-    sorted_words = sorted(freq_dict.keys(), key = sorting_rule)
+        return (-freq_dict[key], key)
+    # вернётся кортеж из 2-х значений, по умолчанию сортируем по алфавиту)
+    sorted_words = sorted(freq_dict, key = sorting_rule)
     return sorted_words[:top_n] # и так понятно, что с самого начала, то есть с 0!
 
 
@@ -155,15 +156,14 @@ def create_language_profile(
         if not isinstance(stop_word, str):
             return None
     tokens = tokenize(text)
-    if tokens is None:
-        return None
     cleaned_tokens = remove_stop_words(tokens, stop_words)
     if cleaned_tokens is None:
         return None
     freq_dict = calculate_frequencies(cleaned_tokens)
     if freq_dict is None:
         return None
-    return (language, freq_dict, len(freq_dict)) # возвращает именно это по изначальным требованиям!!!
+    return (language, freq_dict, len(freq_dict))
+    # возвращает именно это по изначальным требованиям!!!
 
 
 def check_profile(profile: ProfileType) -> bool:
@@ -183,9 +183,12 @@ def check_profile(profile: ProfileType) -> bool:
     lang, freq, n_words = profile # для отдельной проверки каждого элемента
     if not isinstance (lang, str):
         return False
-    if not isinstance(freq, dict) or not all(isinstance(k, str) and isinstance(v, (float, int)) for k, v in freq.items()):
+    if not isinstance(freq, dict):
         return False
-    if not isinstance(n_words, int) or isinstance(n_words, bool) or n_words <= 0: # взаимосвязь bool-типа со значениями 0, 1
+    if not all(isinstance(k, str) and isinstance(v, (float, int)) for k, v in freq.items()):
+        return False
+    if not isinstance(n_words, int) or isinstance(n_words, bool) or n_words <= 0:
+    # взаимосвязь bool-типа со значениями 0, 1
         return False
     return True
 
@@ -243,153 +246,137 @@ def detect_language_by_top_n(
         return None
     if score_1 > score_2:
         return profile_1[0]
-    elif score_2 > score_1:
+    if score_2 > score_1:
         return profile_2[0]
     else:
         return sorted([profile_1[0], profile_2[0]])[0]
-    
 
 # Mark 8
 
+# def calculate_mse(predicted: Sequence[float], actual: Sequence[float]) -> float | None:
+#     """
+#     Calculates mean squared error between predicted and actual values.
 
-def calculate_mse(predicted: Sequence[float], actual: Sequence[float]) -> float | None:
-    """
-    Calculates mean squared error between predicted and actual values.
+#     Args:
+#         predicted (Sequence[float]): Sequence of predicted values
+#         actual (Sequence[float]): Sequence of actual values
 
-    Args:
-        predicted (Sequence[float]): Sequence of predicted values
-        actual (Sequence[float]): Sequence of actual values
-
-    Returns:
-        float | None: The score
-        Returns None in case of incorrect input types or mismatched length.
-        In case of empty inputs, returns 0.0.
-    """
-
-
-def compare_profiles_by_mse(
-    unknown_profile: ProfileType, profile_to_compare: ProfileType
-) -> float | None:
-    """
-    Compares two language profiles using the MSE metric.
-
-    Args:
-        unknown_profile (ProfileType): Unknown profile
-        profile_to_compare (ProfileType): Profile
-            to compare the unknown profile with
-
-    Returns:
-        float | None: The distance between the profiles.
-        In case of corrupt input arguments or invalid profile structure, None is returned.
-    """
+#     Returns:
+#         float | None: The score
+#         Returns None in case of incorrect input types or mismatched length.
+#         In case of empty inputs, returns 0.0.
+#     """
 
 
-def detect_language_by_mse(
-    unknown_profile: ProfileType, profile_1: ProfileType, profile_2: ProfileType
-) -> str | None:
-    """
-    Detects the language of an unknown profile.
+# def compare_profiles_by_mse(
+#     unknown_profile: ProfileType, profile_to_compare: ProfileType
+# ) -> float | None:
+#     """
+#     Compares two language profiles using the MSE metric.
 
-    Args:
-        unknown_profile (ProfileType): Profile
-            to determine the language of
-        profile_1 (ProfileType): Known profile
-        profile_2 (ProfileType): Another known profile
+#     Args:
+#         unknown_profile (ProfileType): Unknown profile
+#         profile_to_compare (ProfileType): Profile
+#             to compare the unknown profile with
 
-    Returns:
-        str | None: Unknown profile language.
-        Returns None in case of incorrect input types.
-    """
-
-
-# Mark 10
+#     Returns:
+#         float | None: The distance between the profiles.
+#         In case of corrupt input arguments or invalid profile structure, None is returned.
+#     """
 
 
-def save_profile(profile: ProfileType, save_path: str) -> bool:
-    """
-    Saves a language profile
+# def detect_language_by_mse(
+#     unknown_profile: ProfileType, profile_1: ProfileType, profile_2: ProfileType
+# ) -> str | None:
+#     """
+#     Detects the language of an unknown profile.
 
-    Args:
-        profile (ProfileType): Profile
-        save_path (str): Path to the folder to save profile
+#     Args:
+#         unknown_profile (ProfileType): Profile
+#             to determine the language of
+#         profile_1 (ProfileType): Known profile
+#         profile_2 (ProfileType): Another known profile
 
-    Returns:
-        bool: False in case of incorrect input types or if the profile
-        is missing obligatory keys. True if the profile is saved.
-    """
-
-
-def load_profile(path_to_file: str) -> ProfileType | None:
-    """
-    Loads a language profile.
-
-    Args:
-        path_to_file (str): Path to the language profile
-
-    Returns:
-        ProfileType | None: Loaded profile.
-        Returns None in case of incorrect input types.
-    """
+#     Returns:
+#         str | None: Unknown profile language.
+#         Returns None in case of incorrect input types.
+#     """
 
 
-def collect_profiles(paths_to_profiles: Sequence[str]) -> Sequence[ProfileType] | None:
-    """
-    Collects profiles for a given path.
-
-    Args:
-        paths_to_profiles (Sequence[str]): Sequence of paths to the profiles
-
-    Returns:
-        Sequence[ProfileType] | None: Sequence of loaded profiles.
-        Returns None in case of incorrect input types.
-    """
+# # Mark 10
 
 
-def detect_language_advanced(
-    unknown_profile: ProfileType, known_profiles: Sequence[ProfileType], top_n: int
-) -> Sequence[tuple[str, dict[str, float]]] | None:
-    """
-    Detects the language of an unknown profile.
+# def save_profile(profile: ProfileType, save_path: str) -> bool:
+#     """
+#     Saves a language profile
 
-    Args:
-        unknown_profile (ProfileType): Profile
-            to determine the language of
-        known_profiles (Sequence[ProfileType]): Known profiles
-        top_n (int): Number of popular words
+#     Args:
+#         profile (ProfileType): Profile
+#         save_path (str): Path to the folder to save profile
 
-    Returns:
-        Sequence[tuple[str, dict[str, float]]] | None: Sorted sequence of tuples
-        containing a language and a distance via both metrics.
-        The sequence is sorted by best MSE value, then by best Top-N value.
-        Returns None in case of incorrect input types.
-    """
+#     Returns:
+#         bool: False in case of incorrect input types or if the profile
+#         is missing obligatory keys. True if the profile is saved.
+#     """
 
 
-def print_report(
-    unknown_profile: ProfileType, metrics_stats: Sequence[tuple[str, dict[str, float]]], top_n: int
-) -> None:
-    """
-    Prints report for detection of language.
+# def load_profile(path_to_file: str) -> ProfileType | None:
+#     """
+#     Loads a language profile.
 
-    Args:
-        unknown_profile (ProfileType): Profile
-        metrics_stats (Sequence[tuple[str, dict[str, float]]]): Sequence with distances for
-            available language comparison and metrics
-        top_n (int): Number of popular words
+#     Args:
+#         path_to_file (str): Path to the language profile
 
-    In case of incorrect type inputs, does not print anything.
-    """
+#     Returns:
+#         ProfileType | None: Loaded profile.
+#         Returns None in case of incorrect input types.
+#     """
 
-tokens = tokenize("I was studying.")
-print(tokens)
-stop_words = ["am", "was"]
-print(remove_stop_words(tokens, stop_words))
-tokens = remove_stop_words(tokens, stop_words)
-print(calculate_frequencies(tokens))
-freq_dict = calculate_frequencies(tokens)
-top_n = 4
-print(get_top_n_words(freq_dict, top_n))
-# ["I", " ", "was", " ",  "studying", "."]
 
-# "I was studying"
+# def collect_profiles(paths_to_profiles: Sequence[str]) -> Sequence[ProfileType] | None:
+#     """
+#     Collects profiles for a given path.
 
+#     Args:
+#         paths_to_profiles (Sequence[str]): Sequence of paths to the profiles
+
+#     Returns:
+#         Sequence[ProfileType] | None: Sequence of loaded profiles.
+#         Returns None in case of incorrect input types.
+#     """
+
+
+# def detect_language_advanced(
+#     unknown_profile: ProfileType, known_profiles: Sequence[ProfileType], top_n: int
+# ) -> Sequence[tuple[str, dict[str, float]]] | None:
+#     """
+#     Detects the language of an unknown profile.
+
+#     Args:
+#         unknown_profile (ProfileType): Profile
+#             to determine the language of
+#         known_profiles (Sequence[ProfileType]): Known profiles
+#         top_n (int): Number of popular words
+
+#     Returns:
+#         Sequence[tuple[str, dict[str, float]]] | None: Sorted sequence of tuples
+#         containing a language and a distance via both metrics.
+#         The sequence is sorted by best MSE value, then by best Top-N value.
+#         Returns None in case of incorrect input types.
+#     """
+
+
+# def print_report(
+#     unknown_profile: ProfileType, metrics_stats: Sequence[tuple[str, dict[str, float]]], top_n: int
+# ) -> None:
+#     """
+#     Prints report for detection of language.
+
+#     Args:
+#         unknown_profile (ProfileType): Profile
+#         metrics_stats (Sequence[tuple[str, dict[str, float]]]): Sequence with distances for
+#             available language comparison and metrics
+#         top_n (int): Number of popular words
+
+#     In case of incorrect type inputs, does not print anything.
+#     """
