@@ -2,9 +2,9 @@
 Language detection starter.
 """
 from lab_1_classify_profile.main import (
-    tokenize,
     create_language_profile,
-    detect_language_by_top_n
+    detect_language_by_top_n,
+    tokenize
 )
 
 # pylint: disable=unused-variable, duplicate-code

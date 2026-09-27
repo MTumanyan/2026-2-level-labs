@@ -28,8 +28,6 @@ def tokenize(text: str) -> Sequence[str] | None:
 
     if not isinstance(text, str):
         return None
-    if not text:
-        return None
     tokens = []
     for symbol in text:
         if symbol.isalpha():
@@ -55,7 +53,7 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
         return None
     if not isinstance(stop_words, Sequence):
         return None
-    if not tokens or not stop_words:
+    if not tokens:
         return None
     if not all(isinstance(token, str) for token in tokens):
         return None
@@ -82,8 +80,6 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
     if not isinstance(tokens, Sequence):
         return None
     if not all(isinstance(token, str) for token in tokens):
-        return None
-    if not tokens:
         return None
     freq_dict = {}
     total_tokens = len(tokens)
@@ -142,6 +138,8 @@ def create_language_profile(
     if not isinstance(stop_words, Sequence):
         return None
     if not all(isinstance(stop_word, str) for stop_word in stop_words):
+        return None
+    if tokens is None:
         return None
     tokens = tokenize(text)
     cleaned_tokens = remove_stop_words(tokens, stop_words)
