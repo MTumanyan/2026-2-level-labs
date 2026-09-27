@@ -139,9 +139,9 @@ def create_language_profile(
         return None
     if not all(isinstance(stop_word, str) for stop_word in stop_words):
         return None
+    tokens = tokenize(text)
     if tokens is None:
         return None
-    tokens = tokenize(text)
     cleaned_tokens = remove_stop_words(tokens, stop_words)
     if cleaned_tokens is None:
         return None
