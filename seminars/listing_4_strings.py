@@ -107,6 +107,7 @@ def multiply_string(input_string: str, how_many: int) -> str:
     """
     # student implementation goes here
 
+
 # multiply_string('Hi', 2) → 'HiHi'
 # multiply_string('Hi', 3) → 'HiHiHi'
 # multiply_string('Hi', 1) → 'Hi'
