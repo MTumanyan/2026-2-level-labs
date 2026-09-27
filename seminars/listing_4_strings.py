@@ -105,12 +105,7 @@ def multiply_string(input_string: str, how_many: int) -> str:
     Returns:
         str: Repeated string
     """
-    input_string = 'Hi'
-    how_many = int
-    multiply_string_string = input_string * how_many
-    return (multiply_string)
-multiply_string('Hi', 2)
-
+    # student implementation goes here
 
 # multiply_string('Hi', 2) → 'HiHi'
 # multiply_string('Hi', 3) → 'HiHiHi'
@@ -152,7 +147,7 @@ def extra_end(input_string: str) -> str:
     Returns:
         str: Resulting string
     """
-    
+    # student implementation goes here
 
 
 # extra_end('Hello') → 'lololo'

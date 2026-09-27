@@ -1,7 +1,7 @@
 """
 Language detection starter.
 """
-from main import (
+from lab_1_classify_profile.main import (
     tokenize,
     create_language_profile,
     detect_language_by_top_n
@@ -22,7 +22,7 @@ def main() -> None:
     with open("lab_1_classify_profile/assets/texts/unknown.txt", "r", encoding="utf-8") as file:
         unknown_text = file.read()
     with open("lab_1_classify_profile/assets/stopwords.txt", "r", encoding="utf-8") as file:
-        stopwords = file.read().split("\n")
+        stopwords = file.read().splitlines()
     with open("lab_1_classify_profile/assets/texts/en.txt", "r", encoding="utf-8") as file:
         en_text = file.read()
     en_profile = create_language_profile("en", en_text, stopwords)
@@ -37,4 +37,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

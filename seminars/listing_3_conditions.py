@@ -185,10 +185,7 @@ def is_in_range(n: int, low: int, high: int) -> bool:
     Returns:
         bool: True if low <= n <= high, False otherwise
     """
-    if low <= n <= high:
-        return True
-    else:
-        return False
+    # student implementation goes here
 
 
 # is_in_range(5, 1, 10) → True
