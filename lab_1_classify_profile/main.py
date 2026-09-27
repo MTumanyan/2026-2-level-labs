@@ -5,7 +5,6 @@ Language detection
 """
 
 # pylint:disable=unused-argument
-
 from typing import Sequence
 
 FreqDictType = dict[str, float]
@@ -13,6 +12,7 @@ FreqDictType = dict[str, float]
 ProfileType = tuple[str, FreqDictType, int]
 "Language profile of a text. Contains language name, frequency dictionary and number of tokens."
 # Mark 4.
+
 
 def tokenize(text: str) -> Sequence[str] | None:
     """
@@ -134,6 +134,7 @@ def create_language_profile(
         ProfileType | None: Language profile.
         Returns None in case of incorrect input types.
     """
+
     if not isinstance(language, str) or not isinstance(text, str):
         return None
     if not isinstance(stop_words, Sequence):
@@ -232,7 +233,9 @@ def detect_language_by_top_n(
         return profile_1[0]
     return profile_2[0]
 
+
 # Mark 8
+
 
 def calculate_mse(predicted: Sequence[float], actual: Sequence[float]) -> float | None:
     """
