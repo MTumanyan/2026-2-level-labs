@@ -1,11 +1,6 @@
 """
 Language detection starter.
 """
-from main import (
-    create_language_profile,
-    detect_language_by_top_n,
-    tokenize,
-)
 
 # pylint: disable=unused-variable, duplicate-code, too-many-return-statements
 from lab_1_classify_profile.main import (
@@ -29,13 +24,10 @@ def main() -> None:
     """
     with open("lab_1_classify_profile/assets/texts/de.txt", "r", encoding="utf-8") as file:
         de_text = file.read()
-    tokens = tokenize(de_text)
-    if tokens:
-        print(tokens[:20])
     with open("lab_1_classify_profile/assets/texts/unknown.txt", "r", encoding="utf-8") as file:
         unknown_text = file.read()
     with open("lab_1_classify_profile/assets/stopwords.txt", "r", encoding="utf-8") as file:
-        stopwords = file.read().splitlines()
+        stopwords = file.read().split("\n")
     with open("lab_1_classify_profile/assets/texts/en.txt", "r", encoding="utf-8") as file:
         en_text = file.read()
 
