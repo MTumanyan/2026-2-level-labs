@@ -219,9 +219,7 @@ def capitalize_string() -> str:
         str: capitalized string
     """
     # student implementation goes here
-    string = "I love programming on Python"
-    new_string = string.capitalize
-    print(new_string)
+
 
 # Function calls with expected result:
 # capitalize_string("I love programming on Python") -> I LOVE PROGRAMMING ON PYTHON
