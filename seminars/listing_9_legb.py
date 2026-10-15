@@ -172,11 +172,7 @@ def use_global() -> int:
         int: The new value of global_var.
     """
     # student implementation goes here
-global_var = 0
-def use_global() -> int:
-    global global_var
-    global_var += 5
-    return global_var
+
 
 # use_global() -> 5
 

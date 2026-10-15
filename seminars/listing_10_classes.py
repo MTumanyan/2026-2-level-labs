@@ -190,11 +190,7 @@ print("*" * 15 + " TASKS " + "*" * 15)
 
 # fill the gaps so that the next line prints: "Oh, no! It is another deadline!"
 # deadline = Deadline()
-class Deadline:
-    def __init__(self):
-        print("Oh, no! It is another deadline!")
 
-deadline = Deadline()
 
 #  Task 2
 # easy level
@@ -206,13 +202,7 @@ deadline = Deadline()
 # fill the gaps so that the next lines print the corresponding messages
 # student1 = Student('Marina', 1)  # Hello! My name is Marina, I'm in year 1
 # student2 = Student('Nastya', 2)  # Hello! My name is Nastya, I'm in year 2
-class Student:
-    def __init__(self, name, year):
-        print(f"Hello! My name is {name}, I'm in year {year}")
 
-
-student1 = Student('Marina', 1)
-student2 = Student('Nastya', 2)
 
 # Task 3
 # easy level
@@ -229,20 +219,7 @@ student2 = Student('Nastya', 2)
 #
 # spider = Insect('Spider', 8)
 # spider.introduce()  # Hi! My name is Spider and I have 8 legs
-class Insect:
-    def __init__(self, name, legs):
-        self.name = name
-        self.legs = legs
 
-    def introduce(self):
-        print(f'Hi! My name is {self.name} and I have {self.legs} legs')
-
-
-bee = Insect('Bee', 6)
-bee.introduce()
-
-spider = Insect('Spider', 8)
-spider.introduce()
 
 # Task 4
 # medium level
