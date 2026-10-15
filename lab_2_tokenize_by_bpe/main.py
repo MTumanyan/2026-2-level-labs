@@ -317,6 +317,7 @@ def encode(
     In case of corrupt input arguments or functions used return None,
     None is returned
     """
+
     if original_text is None or vocabulary is None:
         return None
     encoded: list[int] = []
