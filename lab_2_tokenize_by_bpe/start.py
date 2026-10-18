@@ -74,7 +74,7 @@ def main() -> None:
     reference = _read_encoded(f"{base}/ru_encoded.txt")
     print("\n== Шаг 10. Кодирование ru_raw.txt ==")
     if encoded is None:
-        print("  encode вернул None - проверь vocab.json / unknwon_token")
+        print(" encode вернул None - проверь vocab.json / unknwon_token")
     else:
         print(f"  Первые 20 токенов: {encoded[:20]}")
         print(f"  Эталон (первые 20): {reference[:20]}")
