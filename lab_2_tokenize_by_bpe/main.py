@@ -171,7 +171,7 @@ def train(
         if not pair_counts:
             break
         best_pair = None
-        best_score = None
+        best_score = (0, 0, "")
         for p, c in pair_counts.items():
             merged = p[0] + p[1]
             score = (-c, -len(merged), merged)
