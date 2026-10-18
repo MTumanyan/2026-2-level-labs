@@ -2,7 +2,7 @@
 BPE Tokenizer starter
 """
 
-# pylint:disable=too-many-locals, unused-variable
+# pylint:disable=too-many-locals, unused-variable, import error
 
 from main import (
     collect_frequencies,
