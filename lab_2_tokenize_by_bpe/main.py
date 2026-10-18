@@ -78,11 +78,13 @@ def count_tokens_pairs(
     In case of corrupt input arguments, None is returned
     """
 
+    if not isinstance(word_frequencies, dict):
+        return None
     pair_counts = {}
     for word, word_count in word_frequencies.items():
         for index in range(len(word) - 1):
             pair = (word[index], word[index + 1])
-            pair_counts[pair] = pair.counts.get(pair, 0) + word_count
+            pair_counts[pair] = pair_counts.get(pair, 0) + word_count
     return pair_counts
 
 def merge_tokens(
@@ -108,7 +110,7 @@ def merge_tokens(
     if (
         not isinstance(pair, tuple)
         or len(pair) != 2
-    or not all(isinstance(token, str) for token in pair)
+        or not all(isinstance(token, str) for token in pair)
     ):
         return None
     first, second = pair
@@ -162,8 +164,8 @@ def train(
             break
         best_pair = sorted(
             pair_counts,
-            key=lambda pair: (
-                -pair_counts[pair],
+            key=lambda pair, counts=pair_counts: (
+                -counts[pair],
                 -len(pair[0] + pair[1]),
                 pair[0] + pair[1],
             ),
@@ -301,6 +303,7 @@ def load_vocabulary(vocab_path: str) -> dict[str, int] | None:
 
     In case of corrupt input arguments, None is returned
     """
+
     if not isinstance(vocab_path, str):
         return None
     with open(vocab_path, "r", encoding="utf-8") as file:
