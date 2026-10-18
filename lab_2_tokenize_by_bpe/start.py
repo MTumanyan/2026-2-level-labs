@@ -2,7 +2,7 @@
 BPE Tokenizer starter
 """
 
-# pylint:disable=too-many-locals, unused-variable, import error
+# pylint:disable=too-many-locals, unused-variable, import-error
 
 from main import (
     collect_frequencies,
@@ -32,12 +32,6 @@ def main() -> None:
         text, start_of_word=None, end_of_word="</s>"
     )
 
-    with open("lab_2_tokenize_by_bpe/assets/text.txt", "r", encoding="utf-8") as text_file:
-        text = text_file.read()
-    with open("lab_2_tokenize_by_bpe/assets/en_raw.txt", "r", encoding="utf-8") as text_file:
-        text_reference_translation = text_file.read()
-    with open("lab_2_tokenize_by_bpe/assets/en_encoded.txt", "r", encoding="utf-8") as text_file:
-        translation_encoded_raw = text_file.read()
 
     print("== Шаг 2. Частотный словарь (первые 5 записей) ===")
     for index, (word, freq) in enumerate(word_frequencies.items()):
