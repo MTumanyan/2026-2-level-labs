@@ -4,7 +4,6 @@ BPE Tokenizer starter
 
 # pylint:disable=too-many-locals, unused-variable, import-error
 
-
 from main import (  # type: ignore
     collect_frequencies,
     decode,
@@ -77,6 +76,8 @@ def main() -> None:
         print(f"  Первые 20 токенов: {encoded[:20]}")
         print(f"  Эталон (первые 20): {reference[:20]}")
         print(f"  Совпадение первых 20 токенов с эталоном: {encoded[:20] == reference[:20]}")
+        result = encoded
+        assert result, "Translatiom not working"
 
 
 if __name__ == "__main__":
