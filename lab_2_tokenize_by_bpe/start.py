@@ -7,12 +7,13 @@ BPE Tokenizer starter
 
 from main import (  # type: ignore
     collect_frequencies,
-    train,
-    get_vocabulary,
     decode,
-    load_vocabulary,
     encode,
+    get_vocabulary,
+    load_vocabulary,
+    train,
 )
+
 
 def _read_text(path: str) -> str:
     with open(path, "r", encoding="utf-8") as file:

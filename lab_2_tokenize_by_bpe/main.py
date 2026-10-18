@@ -4,10 +4,10 @@ Lab 2.
 BPE and machine translation evaluation
 """
 
-# pylint:disable=unused-argument
 import json
 from typing import Sequence, cast
 
+# pylint:disable=unused-argument
 
 def prepare_word(
     raw_word: str, start_of_word: str | None, end_of_word: str | None
@@ -26,6 +26,12 @@ def prepare_word(
     In case of corrupt input arguments, None is returned
     """
 
+    if not isinstance(raw_word, str):
+        return None
+    if start_of_word is not None and not isinstance(start_of_word, str):
+        return None
+    if end_of_word is not None and not isinstance(end_of_word, str):
+        return None
     tokens = []
     if start_of_word is not None:
         tokens.append(start_of_word)
@@ -53,6 +59,8 @@ def collect_frequencies(
     None is returned
     """
 
+    if not isinstance(text, str):
+        return None
     frequencies = {}
     for raw_word in text.split():
         prepared = prepare_word(raw_word, start_of_word, end_of_word)
@@ -164,16 +172,17 @@ def train(
             break
         best_pair = None
         best_score = None
-        for pair, count in pair.counts.items():
-            merged = pair[0] + pair[1]
-            score = (-count, -len(merged), merged)
+        for p, c in pair_counts.items():
+            merged = p[0] + p[1]
+            score = (-c, -len(merged), merged)
             if best_pair is None or score < best_score:
                 best_score = score
-                best_pair = pair
+                best_pair = p
         if best_pair is not None:
             next_current = merge_tokens(current, best_pair)
-        if next_current is None:
+            if next_current is None:
                 return None
+            current = next_current
     return current
 
 def get_vocabulary(
@@ -229,7 +238,9 @@ def decode(
     In case of corrupt input arguments, None is returned
     """
 
-    if encoded_text is None or vocabulary is None:
+    if not isinstance(encoded_text, (list, tuple)) or not encoded_text:
+        return None
+    if not isinstance(vocabulary, dict):
         return None
     if end_of_word_token is not None and not isinstance(end_of_word_token, str):
         return None
