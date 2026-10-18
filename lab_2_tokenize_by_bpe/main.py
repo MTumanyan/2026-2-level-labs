@@ -3,11 +3,11 @@ Lab 2.
 
 BPE and machine translation evaluation
 """
+# pylint:disable=unused-argument
 
 import json
-from typing import Sequence, cast
+from typing import cast, Sequence
 
-# pylint:disable=unused-argument
 
 def prepare_word(
     raw_word: str, start_of_word: str | None, end_of_word: str | None

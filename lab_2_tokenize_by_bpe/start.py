@@ -33,8 +33,6 @@ def main() -> None:
     word_frequencies = collect_frequencies(
         text, start_of_word=None, end_of_word="</s>"
     )
-
-
     print("== Шаг 2. Частотный словарь (первые 5 записей) ===")
     for index, (word, freq) in enumerate(word_frequencies.items()):
         if index >= 5:
@@ -74,12 +72,12 @@ def main() -> None:
     reference = _read_encoded(f"{base}/ru_encoded.txt")
     print("\n== Шаг 10. Кодирование ru_raw.txt ==")
     if encoded is None:
-        print(" encode вернул None - проверь vocab.json / unknwon_token")
+        print(" encode вернул None - проверь vocab.json / unknown_token")
     else:
         print(f"  Первые 20 токенов: {encoded[:20]}")
         print(f"  Эталон (первые 20): {reference[:20]}")
         print(f"  Совпадение первых 20 токенов с эталоном: {encoded[:20] == reference[:20]}")
 
 
-if __name__ == "__main__":
+    if __name__ == "__main__":
     main()
