@@ -79,5 +79,5 @@ def main() -> None:
         print(f"  Совпадение первых 20 токенов с эталоном: {encoded[:20] == reference[:20]}")
 
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
