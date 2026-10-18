@@ -157,7 +157,7 @@ def train(
         return None
     if not isinstance(num_merges, int) or num_merges < 0:
         return None
-    current: dict[tuple[str, ...], int] | None = word_frequencies
+    current = word_frequencies
     for _ in range(num_merges):
         pair_counts = count_tokens_pairs(current)
         if not pair_counts:
@@ -171,8 +171,8 @@ def train(
                 best_score = score
                 best_pair = pair
         if best_pair is not None:
-            current = merge_tokens(current, best_pair)
-        if current is None:
+            next_current = merge_tokens(current, best_pair)
+        if next_current is None:
                 return None
     return current
 

@@ -4,7 +4,8 @@ BPE Tokenizer starter
 
 # pylint:disable=too-many-locals, unused-variable, import-error
 
-from main import (  #type: ignore
+
+from main import (  # type: ignore
     collect_frequencies,
     train,
     get_vocabulary,
