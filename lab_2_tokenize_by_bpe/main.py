@@ -6,7 +6,7 @@ BPE and machine translation evaluation
 
 # pylint:disable=unused-argument
 import json
-from typing import Sequence
+from typing import Sequence, cast
 
 
 def prepare_word(
@@ -157,22 +157,23 @@ def train(
         return None
     if not isinstance(num_merges, int) or num_merges < 0:
         return None
-    current = word_frequencies
+    current: dict[tuple[str, ...], int] | None = word_frequencies
     for _ in range(num_merges):
         pair_counts = count_tokens_pairs(current)
         if not pair_counts:
             break
-        best_pair = sorted(
-            pair_counts,
-            key=lambda pair, counts=pair_counts: (
-                -counts[pair],
-                -len(pair[0] + pair[1]),
-                pair[0] + pair[1],
-            ),
-        )[0]
-        current = merge_tokens(current, best_pair)
+        best_pair = None
+        best_score = None
+        for pair, count in pair.counts.items():
+            merged = pair[0] + pair[1]
+            score = (-count, -len(merged), merged)
+            if best_pair is None or score < best_score:
+                best_score = score
+                best_pair = pair
+        if best_pair is not None:
+            current = merge_tokens(current, best_pair)
         if current is None:
-            return None
+                return None
     return current
 
 def get_vocabulary(
@@ -307,7 +308,7 @@ def load_vocabulary(vocab_path: str) -> dict[str, int] | None:
     if not isinstance(vocab_path, str):
         return None
     with open(vocab_path, "r", encoding="utf-8") as file:
-        return json.load(file)
+        return cast(dict[str, int], json.load(file))
 
 def encode(
     original_text: str,
