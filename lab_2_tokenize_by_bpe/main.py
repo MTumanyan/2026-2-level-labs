@@ -3,6 +3,7 @@ Lab 2.
 
 BPE and machine translation evaluation
 """
+
 # pylint:disable=unused-argument
 import json
 import math
@@ -44,19 +45,6 @@ def prepare_word(
 
     return tuple(tokens)
 
-    if not isinstance(raw_word, str):
-        return None
-    if start_of_word is not None and not isinstance(start_of_word, str):
-        return None
-    if end_of_word is not None and not isinstance(end_of_word, str):
-        return None
-    tokens = []
-    if start_of_word is not None:
-        tokens.append(start_of_word)
-    tokens.extend(raw_word)
-    if end_of_word is not None:
-        tokens.append(end_of_word)
-    return tuple(tokens)
 
 def collect_frequencies(
     text: str, start_of_word: str | None, end_of_word: str
@@ -95,19 +83,6 @@ def collect_frequencies(
 
     return word_frequencies
 
-    if not isinstance(text, str):
-        return None
-    if start_of_word is not None and not isinstance(start_of_word, str):
-        return None
-    if not isinstance(end_of_word, str):
-        return None
-    frequencies = {}
-    for raw_word in text.split():
-        prepared = prepare_word(raw_word, start_of_word, end_of_word)
-        if prepared is None:
-            return None
-        frequencies[prepared] = frequencies.get(prepared, 0) + 1
-    return frequencies
 
 def count_tokens_pairs(
     word_frequencies: dict[tuple[str, ...], int],
@@ -199,34 +174,6 @@ def merge_tokens(
 
     return new_word_frequencies
 
-    if not isinstance(word_frequencies, dict):
-        return None
-    if (
-        not isinstance(pair, tuple)
-        or len(pair) != 2
-        or not all(isinstance(token, str) for token in pair)
-    ):
-        return None
-    first, second = pair
-    merged_token = first + second
-    new_frequencies = {}
-    for word, word_count in word_frequencies.items():
-        new_word = []
-        index = 0
-        while index < len(word):
-            if (
-                index < len(word) - 1
-                and word[index] == first
-                and word[index + 1] == second
-            ):
-                new_word.append(merged_token)
-                index += 2
-            else:
-                new_word.append(word[index])
-                index += 1
-        new_key = tuple(new_word)
-        new_frequencies[new_key] = new_frequencies.get(new_key, 0) + word_count
-    return new_frequencies
 
 def train(
     word_frequencies: dict[tuple[str, ...], int] | None, num_merges: int
@@ -276,29 +223,6 @@ def train(
     return word_frequencies
 
 
-    if not isinstance(word_frequencies, dict):
-        return None
-    if not isinstance(num_merges, int) or num_merges < 0:
-        return None
-    current = word_frequencies
-    for _ in range(num_merges):
-        pair_counts = count_tokens_pairs(current)
-        if not pair_counts:
-            break
-        best_pair = None
-        best_score = (0, 0, "")
-        for p, c in pair_counts.items():
-            merged = p[0] + p[1]
-            score = (-c, -len(merged), merged)
-            if best_pair is None or score < best_score:
-                best_score = score
-                best_pair = p
-        if best_pair is not None:
-            next_current = merge_tokens(current, best_pair)
-            if next_current is None:
-                return None
-            current = next_current
-    return current
 
 def get_vocabulary(
     word_frequencies: dict[tuple[str, ...], int], unknown_token: str
@@ -386,23 +310,6 @@ def decode(
 
     return "".join(decoded_symbols)
 
-    if not isinstance(encoded_text, (list, tuple)) or not encoded_text:
-        return None
-    if not isinstance(vocabulary, dict):
-        return None
-    if end_of_word_token is not None and not isinstance(end_of_word_token, str):
-        return None
-    id_to_token = {token_id: token for token, token_id in vocabulary.items()}
-    pieces = []
-    for token_id in encoded_text:
-        token = id_to_token.get(token_id)
-        if token is None:
-            return None
-        pieces.append(token)
-    text = "".join(pieces)
-    if end_of_word_token is not None:
-        text = text.replace(end_of_word_token, " ")
-    return text
 
 def tokenize_word(
     word: tuple[str, ...], vocabulary: dict[str, int], end_of_word: str | None, unknown_token: str
@@ -479,34 +386,6 @@ def tokenize_word(
 
     return encoded_ids
 
-    if (
-        not isinstance(word, (tuple, list))
-        or not isinstance(vocabulary, dict)
-        or not isinstance(unknown_token, str)
-    ):
-        return None
-    if unknown_token not in vocabulary:
-        return None
-    parts = list(word)
-    candidates = sorted(
-        (token for token in vocabulary if token != unknown_token),
-        key=lambda token: (-len(token), token),
-    )
-    for candidate in candidates:
-        if not candidate:
-            continue
-        candidate_chars = list(candidate)
-        token_len = len(candidate)
-        index = 0
-        while index < len(parts):
-            if parts[index:index + token_len] == candidate_chars:
-                parts[index:index + token_len] = [candidate]
-            index += 1
-    unknown_id = vocabulary[unknown_token]
-    token_ids = []
-    for part in parts:
-        token_ids.append(vocabulary.get(part, unknown_id))
-    return token_ids
 
 def load_vocabulary(vocab_path: str) -> dict[str, int] | None:
     """
@@ -530,10 +409,6 @@ def load_vocabulary(vocab_path: str) -> dict[str, int] | None:
         return None
     return data
 
-    if not isinstance(vocab_path, str):
-        return None
-    with open(vocab_path, "r", encoding="utf-8") as file:
-        return cast(dict[str, int], json.load(file))
 
 def encode(
     original_text: str,

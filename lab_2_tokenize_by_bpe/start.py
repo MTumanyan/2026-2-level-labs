@@ -13,22 +13,6 @@ from lab_2_tokenize_by_bpe.main import (
     train,
 )
 
-from main import (  # type: ignore
-    collect_frequencies,
-    decode,
-    encode,
-    get_vocabulary,
-    load_vocabulary,
-    train,
-)
-
-
-def _read_text(path: str) -> str:
-    with open(path, "r", encoding="utf-8") as file:
-        return file.read()
-
-def _read_encoded(path: str) -> list[int]:
-    return [int(item) for item in _read_text(path).split()]
 
 def main() -> None:
     """
