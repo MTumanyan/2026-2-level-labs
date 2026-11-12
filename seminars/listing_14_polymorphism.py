@@ -43,7 +43,6 @@ Polymorphism.
 ### sleep
 ## Magic Methods
 ### __str__
-
 # AnimalCollection
 ## Magic Methods
 ### __str__
