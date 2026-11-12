@@ -17,6 +17,7 @@ Polymorphism.
 ### sleep
 ## Magic Methods
 ### __str__
+
 # Dog
 ## Attributes
 ### eating_type (predator)
@@ -30,6 +31,7 @@ Polymorphism.
 ### sleep
 ## Magic Methods
 ### __str__
+
 # Cat
 ## Attributes
 ### eating_type (predator)
@@ -43,6 +45,7 @@ Polymorphism.
 ### sleep
 ## Magic Methods
 ### __str__
+
 # AnimalCollection
 ## Magic Methods
 ### __str__
