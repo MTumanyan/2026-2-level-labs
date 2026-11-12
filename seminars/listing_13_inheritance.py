@@ -22,6 +22,16 @@ class Vehicle:
             Simulates vehicle movement.
     """
 
+    def __init__(self, max_speed: int, colour: str):
+        self.max_speed = max_speed
+        self.colour = colour
+
+    def move(self) -> None:
+        """Simulates vehicle movement."""
+        print(f"The {self.colour} vehicle moves at up to {self.max_speed} km/h.")
+
+    def __str__(self) -> str:
+        return f"Vehicle(max_speed={self.max_speed}, colour='{self.colour}')"
 
 class Car:
     """
