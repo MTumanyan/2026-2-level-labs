@@ -17,20 +17,6 @@ Polymorphism.
 ### sleep
 ## Magic Methods
 ### __str__
-class Animal:
-    def __init__(self, eating_type: str, habitat: str, moving_type: str) -> None:
-        self.eating_type = eating_type
-        self.habitat = habitat
-        self.moving_type = moving_type
-    def breathe(self) -> None:
-        print("Breathing")
-    def eat(self) -> None:
-        print("Eating")
-    def sleep(self) -> None:
-        print("Sleeping")
-    def __str__(self):
-        return f"eating type: {self.eating_type}\nhabitat: {self.habitat}\nmoving_type: {self.moving_type}"
-
 # Dog
 ## Attributes
 ### eating_type (predator)
@@ -44,19 +30,6 @@ class Animal:
 ### sleep
 ## Magic Methods
 ### __str__
-
-class Dog:
-    def __init__(self, eating_type: str, tamed: str, breed: str, habitat: str) -> None:
-        self.eating_type = eating_type
-        self.tamed = tamed
-        self.breed = breed
-        self.habitat = habitat
-    def breathe(self):
-        return ("Breathing")
-    def eat(self):
-        return ("Eating")
-    def sleep(self):
-        return ("Sleeping")
 # Cat
 ## Attributes
 ### eating_type (predator)
