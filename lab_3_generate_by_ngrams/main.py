@@ -694,9 +694,10 @@ class BeamSearchTextGenerator:
                 if next_tokens is None:
                     return None
                 if next_tokens:
-                    candidates = self.beam_searcher.continue_sequence(seq, next_tokens, candidates)
-                    if candidates is None:
+                    updated_candidates = self.beam_searcher.continue_sequence(seq, next_tokens, candidates)
+                    if updated_candidates is None:
                         return None
+                    candidates = updated_candidates
             pruned = self.beam_searcher.prune_sequence_candidates(candidates)
             if pruned is None:
                 return None
