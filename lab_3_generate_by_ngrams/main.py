@@ -4,7 +4,7 @@ Lab 3.
 Beam-search and natural language generation evaluation
 """
 
-# pylint:disable=too-few-public-methods
+# pylint:disable=too-few-public-methods, unused-argument
 
 
 import math
@@ -56,7 +56,7 @@ class TextProcessor:
         for word in words:
             clean_word = "".join(char for char in word if char.isalpha())
             if clean_word:
-                tokens.extend(list(clean_word))
+                tokens.extend(clean_word)
                 tokens.append(self._end_of_word_token)
         if not tokens:
             return None
@@ -156,7 +156,7 @@ class TextProcessor:
         """
 
         if element is None or not isinstance(element, str) or len(element) != 1:
-            return None
+            return
         if element not in self._storage:
             self._storage[element] = len(self._storage)
 
@@ -193,8 +193,7 @@ class TextProcessor:
         """
 
         if not isinstance(content, dict):
-            return None
-        return None
+            return
 
     def _decode(self, corpus: tuple[int, ...]) -> tuple[str, ...] | None:
         """
@@ -307,7 +306,7 @@ class WordProcessor(TextProcessor):
         """
 
         if element is None or not isinstance(element, str) or not element:
-            return None
+            return
         if element not in self._storage:
             self._storage[element] = len(self._storage)
 
@@ -390,7 +389,7 @@ class NGramLanguageModel:
         """
 
         if frequencies is None or not isinstance(frequencies, dict):
-            return None
+            return
         self._n_gram_frequencies = frequencies
 
     def build(self) -> bool:
@@ -406,7 +405,11 @@ class NGramLanguageModel:
         False is returned
         """
 
-        if self._encoded_corpus is None or not isinstance(self._encoded_corpus, tuple) or not self._encoded_corpus:
+        if (
+            self._encoded_corpus is None
+            or not isinstance(self._encoded_corpus, tuple)
+            or not self._encoded_corpus
+        ):
             return False
         n_grams = self._extract_n_grams(self._encoded_corpus)
         if n_grams is None:
@@ -518,7 +521,8 @@ class GreedyTextGenerator:
             next_tokens = self._model.generate_next_token(tuple(current_sequence))
             if not next_tokens:
                 break
-            best_token = max(next_tokens.keys(), key=lambda token: (next_tokens[token], token))
+            max_prob = max(next_tokens.values())
+            best_token = max(token for token, prob in next_tokens.items() if prob == max_prob)
             current_sequence.append(best_token)
         return self._text_processor.decode(tuple(current_sequence))
 
@@ -595,7 +599,11 @@ class BeamSearcher:
         In case of corrupt input arguments or unexpected behaviour of methods used return None.
         """
 
-        if not next_tokens or len(next_tokens) > self._beam_width or sequence not in sequence_candidates:
+        if (
+            not next_tokens
+            or len(next_tokens) > self._beam_width
+            or sequence not in sequence_candidates
+        ):
             return None
         new_candidates = dict(sequence_candidates)
         base_penalty = new_candidates.pop(sequence)
