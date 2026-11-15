@@ -213,6 +213,8 @@ class TextProcessor:
         In case any of methods used return None, None is returned.
         """
 
+        if corpus is None or not isinstance(corpus, tuple) or not corpus:
+            return None
         if corpus is None or not isinstance(corpus, tuple):
             return None
         decoded =[]
@@ -604,6 +606,12 @@ class BeamSearcher:
         """
 
         if (
+            not isinstance(sequence, tuple)
+            or not isinstance(next_tokens, list)
+            or not isinstance(sequence_candidates, dict)
+        ):
+            return None
+        if (
             not next_tokens
             or len(next_tokens) > self._beam_width
             or sequence not in sequence_candidates
@@ -632,6 +640,8 @@ class BeamSearcher:
         In case of corrupt input arguments return None.
         """
 
+        if not isinstance(sequence_candidates, dict) or not sequence_candidates:
+            return None
         if not isinstance(sequence_candidates, dict):
             return None
         sorted_by_seq = sorted(sequence_candidates.items(), key=lambda x: x[0], reverse=True)
@@ -697,9 +707,8 @@ class BeamSearchTextGenerator:
                     updated_candidates = self.beam_searcher.continue_sequence(
                         seq, next_tokens, candidates
                     )
-                    if updated_candidates is None:
-                        return None
-                    candidates = updated_candidates
+                    if updated_candidates is not None:
+                        candidates = updated_candidates
             pruned = self.beam_searcher.prune_sequence_candidates(candidates)
             if pruned is None:
                 return None
