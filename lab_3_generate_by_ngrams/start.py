@@ -15,21 +15,12 @@ from lab_3_generate_by_ngrams.main import (
 )
 
 
-from lab_3_generate_by_ngrams.main import (
-    BeamSearchTextGenerator,
-    GreedyTextGenerator,
-    NGramLanguageModel,
-    TextProcessor,
-)
-
-
 def main() -> None:
     """
     Launches an implementation.
 
     In any case returns, None is returned
     """
-
     with open(
         "./lab_3_generate_by_ngrams/assets/Harry_Potter.txt", "r", encoding="utf-8"
     ) as text_file:
