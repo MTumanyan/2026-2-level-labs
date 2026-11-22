@@ -46,6 +46,11 @@ class Sentence:
             position (int): Position of the sentence in the text.
         """
 
+        self._text = text
+        self._position = position
+        self._preprocessed = ()
+        self._encoded = ()
+
     def __eq__(self, other: object) -> bool:
         """
         Checks equality between two Sentence instances.
