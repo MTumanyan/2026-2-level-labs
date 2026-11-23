@@ -8,7 +8,6 @@ TextRank summarizer starter
 from lab_4_summarization_textrank.main import SentencePreprocessor
 
 
-
 def main() -> None:
     """
     Launches an implementation.
